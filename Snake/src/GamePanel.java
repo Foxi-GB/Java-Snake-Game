@@ -59,10 +59,12 @@ public class GamePanel extends JPanel implements ActionListener{
             g.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, SCREEN_HEIGHT);
             g.drawLine(0, i*UNIT_SIZE, SCREEN_WIDTH, i*UNIT_SIZE);
         }
-
+       
+        //DRAW apple
         g.setColor(Color.red);
         g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
-
+        
+        //DRAW snake
         for(int i = 0; i < bodyParts; i++){
             if(i == 0){
                 g.setColor(Color.green);
@@ -83,8 +85,8 @@ public class GamePanel extends JPanel implements ActionListener{
 
     public void move(){
         for(int i = bodyParts; i>0;i--){
-            x[i] = x[i] - 1; 
-            y[i] = y[i] - 1; 
+            x[i] = x[i - 1]; 
+            y[i] = y[i - 1]; 
         }
 
         switch(direction){
@@ -108,7 +110,32 @@ public class GamePanel extends JPanel implements ActionListener{
     }
 
     public void checkCollisions(){
+        //Checks for head hits body
+        for(int i = bodyParts; i > 0; i--){
+            if((x[0] == x[i]) && (y[0]==y[i])){
+                running = false;
+            }
+        }
+        //Check if head hits left border
+        if(x[0] < 0){
+            running = false;
+        }
+        //Check if head hits right border
+        if(x[0] > SCREEN_WIDTH){
+            running = false;
+        }
+        //Check if head hits top border
+        if(y[0] < 0){
+            running = false;
+        }
+        //Check if head hits bottom border
+        if(y[0] > SCREEN_HEIGHT){
+            running = false;
+        }
 
+        if(!running){
+            timer.stop(); 
+        }
     }
 
     public void gameOver(Graphics g){
@@ -117,8 +144,12 @@ public class GamePanel extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        
+        if(running){
+            move(); 
+            checkApple();
+            checkCollisions();
+        }
+        repaint();
     }
     
     public class MyKeyAdapter extends KeyAdapter{
