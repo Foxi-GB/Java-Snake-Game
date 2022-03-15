@@ -19,7 +19,7 @@ Following a tutorial online to develop a Java snake game and learn how to use Ja
 
 ### Executing program
 
-* Launch the program throught the Snake Game file.
+* Launch the program through the Snake Game file.
 
 
 ## Authors
